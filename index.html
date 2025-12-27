@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>D-day Widget</title>
+
+<!-- Pretendard -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+
+<style>
+  body {
+    margin: 0;
+    padding: 12px;
+    font-family: "Pretendard", -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .wrap {
+    max-width: 320px;
+    margin: auto;
+    text-align: center;
+  }
+
+  .line {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  .dday {
+    font-size: 32px;
+    font-weight: 700;
+    margin-top: 6px;
+  }
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+  <div class="line" id="todayText"></div>
+  <div class="line" id="ddayText"></div>
+  <div class="dday" id="ddayResult"></div>
+
+</div>
+
+<script>
+const TODAY_DATE = new Date().toISOString().slice(0, 10);  // Date of Today
+
+//*************🔧SETTINGS🔧*************
+// 🔧 Date Setting 날짜 설정
+const DDAY_DATE  = "2026-01-01"; //Date of D-day(D-0) 디데이(D-0) 날짜
+// 🔧 Color Setting 색상 설정
+const TEXT_COLOR = "#fac608"; //Text color (HEX code) 텍스트 색상
+const BG_COLOR   = "#ffffc8"; //Background color (HEX code) 배경 색상
+//**********************************
+
+document.documentElement.style.setProperty("--text-color", TEXT_COLOR);
+document.documentElement.style.setProperty("--bg-color", BG_COLOR);
+
+function format(dateStr) {
+  const d = new Date(dateStr);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y} / ${m} / ${day}`;
+}
+
+const today = new Date(TODAY_DATE);
+const target = new Date(DDAY_DATE);
+
+today.setHours(0,0,0,0);
+target.setHours(0,0,0,0);
+
+const diff = Math.round((target - today) / (1000 * 60 * 60 * 24));
+
+const label =
+  diff === 0 ? "D-day" :
+  diff > 0  ? `D-${String(diff).padStart(3,"0")}` :
+              `D+${String(Math.abs(diff)).padStart(3,"0")}`;
+
+document.getElementById("todayText").innerText =
+  `Today: ${format(TODAY_DATE)}`;
+
+document.getElementById("ddayText").innerText =
+  `D-day: ${format(DDAY_DATE)}`;
+
+document.getElementById("ddayResult").innerText = label;
+</script>
+
+</body>
+</html>
